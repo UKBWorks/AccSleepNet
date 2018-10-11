@@ -6,7 +6,7 @@ Code for the model in the paper derived from DeepSleepNet: a Model for Automatic
 before start the program, please specify the dataset folder in train.py then run the script. 
 
 ## Environment ##
-- Windows 10
+- Windows 10 64bit
 - CUDA toolkit 9.0 and CuDNN v6
 - Python 3.6
 - [tensorflow-gpu (1.6+)]
@@ -14,7 +14,7 @@ before start the program, please specify the dataset folder in train.py then run
 - scikit-learn
 - scipy
 - pandas
-
+- may others
 
 ## Dataset ##
 The first dataset is using V.T. van Hees et.al Estimating sleep parameters using an accelerometer without sleep diary
