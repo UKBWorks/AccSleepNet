@@ -140,7 +140,8 @@ class DeepFeatureNetTrainer(Trainer):
             interval_plot_filter=50,
             interval_save_model=100,
             interval_print_cm=10,
-            binary_sleep=True
+            binary_sleep=True,
+            test_file=""
     ):
         super(self.__class__, self).__init__(
             interval_plot_filter=interval_plot_filter,
@@ -310,7 +311,7 @@ class DeepFeatureNetTrainer(Trainer):
                     n_folds=self.n_folds,
                     fold_idx=self.fold_idx
                 )
-                x_train, y_train, x_valid, y_valid = data_loader.load_train_data(self.binary_sleep)
+                x_train, y_train, x_valid, y_valid = data_loader.load_train_data(binary_sleep=self.binary_sleep)
 
                 # Performance history
                 all_train_loss = np.zeros(n_epochs)
@@ -699,7 +700,7 @@ class DeepSleepNetTrainer(Trainer):
                     n_folds=self.n_folds,
                     fold_idx=self.fold_idx
                 )
-                x_train, y_train, x_valid, y_valid = data_loader.load_train_data(self.binary_sleep)
+                x_train, y_train, x_valid, y_valid = data_loader.load_train_data(binary_sleep=self.binary_sleep)
 
                 # Performance history
                 all_train_loss = np.zeros(n_epochs)

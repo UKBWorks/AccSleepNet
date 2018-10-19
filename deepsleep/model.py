@@ -307,43 +307,7 @@ class DeepSleepNet(DeepFeatureNet):
         name = "l{}_bi_lstm".format(self.layer_idx)
         hidden_size = 512   # will output 1024 (512 forward, 512 backward)
         with tf.variable_scope(name) as scope:
-            ''' this is the old code
-            fw_lstm_cell = tf.nn.rnn_cell.LSTMCell(hidden_size,
-                                                   use_peepholes=True,
-                                                   state_is_tuple=True)
-            bw_lstm_cell = tf.nn.rnn_cell.LSTMCell(hidden_size,
-                                                   use_peepholes=True,
-                                                   state_is_tuple=True)
-            if self.use_dropout_sequence:
-                keep_prob = 0.5 if self.is_train else 1.0
-                fw_lstm_cell = tf.nn.rnn_cell.DropoutWrapper(
-                    fw_lstm_cell,
-                    output_keep_prob=keep_prob
-                )
-                bw_lstm_cell = tf.nn.rnn_cell.DropoutWrapper(
-                    bw_lstm_cell,
-                    output_keep_prob=keep_prob
-                )
 
-            fw_cell = tf.nn.rnn_cell.MultiRNNCell([fw_lstm_cell] * self.n_rnn_layers,
-                                                  state_is_tuple=True)
-            bw_cell = tf.nn.rnn_cell.MultiRNNCell([bw_lstm_cell] * self.n_rnn_layers,
-                                                  state_is_tuple=True)
-
-            # Initial state of RNN
-            self.fw_initial_state = fw_cell.zero_state(self.batch_size, tf.float32)
-            self.bw_initial_state = bw_cell.zero_state(self.batch_size, tf.float32)
-
-            # Feedforward to MultiRNNCell
-            list_rnn_inputs = tf.unstack(seq_input, axis=1)
-            outputs, fw_state, bw_state = tf.nn.static_bidirectional_rnn(
-                cell_fw=fw_cell,
-                cell_bw=bw_cell,
-                inputs=list_rnn_inputs,
-                #initial_state_fw=self.fw_initial_state,
-                #initial_state_bw=self.bw_initial_state
-            )
-            '''
             """ ben's new code """
             fw_lstm_cell1 = tf.nn.rnn_cell.LSTMCell(hidden_size, use_peepholes=True, state_is_tuple=True)
             fw_lstm_cell2 = tf.nn.rnn_cell.LSTMCell(hidden_size, use_peepholes=True, state_is_tuple=True)

@@ -41,7 +41,7 @@ tf.app.flags.DEFINE_string('output_dir', 'E://SleepDatasetpython36//ConvertedDat
                            """and outputs.""")
 tf.app.flags.DEFINE_integer('n_folds', 20,
                            """Number of cross-validation folds.""")
-tf.app.flags.DEFINE_integer('fold_idx', 0,
+tf.app.flags.DEFINE_integer('fold_idx', 20,
                             """Index of cross-validation fold to train.""")
 tf.app.flags.DEFINE_integer('pretrain_epochs', 5,
                             """Number of epochs for pretraining DeepFeatureNet.""")
