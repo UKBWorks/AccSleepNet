@@ -32,13 +32,20 @@ FLAGS = tf.app.flags.FLAGS
 # # tf.app.flags.DEFINE_boolean('resume', False,
 # #                             """Whether to resume the training process.""")
 # =============================================================================
-tf.app.flags.DEFINE_string('data_dir', 'E://SleepDatasetpython36//ConvertedDatasets//NclAccGENEA_1s_agg_721_npz//',
-                           """Directory where to load training data.""")
-# tf.app.flags.DEFINE_string('data_dir', 'E://SleepDatasetpython36//ConvertedDatasets//NclAccNpz-721_Simple_format_FeatureDataset//sum',
+#"E://NCLOneDrive//OneDrive - Newcastle University//Dataset//ConvertedDatasets//NclAccGENEA_1s_agg_721_npz//"
+# tf.app.flags.DEFINE_string('data_dir', 'E://NCLOneDrive//OneDrive - Newcastle University//'
+#                                        'Dataset//NCLSLeepConvertedDatasets//NclAccGENEA_1s_agg_721_npz//',
 #                            """Directory where to load training data.""")
-tf.app.flags.DEFINE_string('output_dir', 'E://SleepDatasetpython36//ConvertedDatasets//NclAccNpz-forPilotRuntest//output',
+tf.app.flags.DEFINE_string('data_dir', 'E://NCLOneDrive//OneDrive - Newcastle University//'
+                                       'Dataset//MESA//Acc-HR-Aligned//Aligned_final//combined//Pilot_run//',
+                           """Directory where to load training data.""")
+# tf.app.flags.DEFINE_string('data_dir', "D:\\tmp\\combined_seq2label0-300.npz",
+#                            """Directory where to load training data.""")
+tf.app.flags.DEFINE_string('output_dir', "D:\\tmp\\temp_result",
                            """ Directory where to save trained models """
                            """and outputs.""")
+tf.app.flags.DEFINE_boolean('use_npz', True,
+                           """Use npz training files""")
 tf.app.flags.DEFINE_integer('n_folds', 20,
                            """Number of cross-validation folds.""")
 tf.app.flags.DEFINE_integer('fold_idx', 20,
@@ -63,14 +70,15 @@ def pretrain(n_epochs):
         output_dir=FLAGS.output_dir,
         n_folds=FLAGS.n_folds, 
         fold_idx=FLAGS.fold_idx,
-        batch_size=5,
+        batch_size=4,
         #input_dims=EPOCH_SEC_LEN*85.7,
         input_dims=721,
         n_classes=get_num_class(FLAGS.binary_sleep),
         interval_plot_filter=50,
         interval_save_model=100,
         interval_print_cm=10,
-        binary_sleep=FLAGS.binary_sleep
+        binary_sleep=FLAGS.binary_sleep,
+        use_npz=FLAGS.use_npz
     )
     
     #call FeatureNet train() function
@@ -124,11 +132,12 @@ def main(argv=None):
     pretrained_model_path = pretrain(
         n_epochs=FLAGS.pretrain_epochs
     )
-
-    finetuned_model_path = finetune(
-        model_path=pretrained_model_path,
-        n_epochs=FLAGS.finetune_epochs
-    )
+    # run for CNN first
+    #
+    # finetuned_model_path = finetune(
+    #     model_path=pretrained_model_path,
+    #     n_epochs=FLAGS.finetune_epochs
+    # )
 
 
 

@@ -13,7 +13,7 @@ import numpy as np
 import tensorflow as tf
 from sklearn.metrics import confusion_matrix, f1_score
 
-from deepsleep.data_loader import NonSeqDataLoader, SeqDataLoader
+from deepsleep.data_loader import NonSeqDataLoader, SeqDataLoader, NonSeqMESADataLoader
 from deepsleep.model import DeepFeatureNet, DeepSleepNet
 from deepsleep.optimize import adam, adam_clipping_list_lr
 from deepsleep.utils import iterate_minibatches, iterate_batch_seq_minibatches
@@ -141,6 +141,7 @@ class DeepFeatureNetTrainer(Trainer):
             interval_save_model=100,
             interval_print_cm=10,
             binary_sleep=True,
+            use_npz=True,
             test_file=""
     ):
         super(self.__class__, self).__init__(
@@ -157,13 +158,14 @@ class DeepFeatureNetTrainer(Trainer):
         self.input_dims = input_dims
         self.n_classes = n_classes
         self.binary_sleep = binary_sleep
+        self.use_npz = use_npz
 
     def _run_epoch(self, sess, network, inputs, targets, train_op, is_train):
         start_time = time.time()
         y = []
         y_true = []
         total_loss, n_batches = 0.0, 0
-        is_shuffle = True if is_train else False
+        is_shuffle = False #True if is_train else False !TODO change to original code
         for x_batch, y_batch in iterate_minibatches(inputs,
                                                     targets,
                                                     self.batch_size,
@@ -306,12 +308,20 @@ class DeepFeatureNetTrainer(Trainer):
 
             # Load data
             if sess.run(global_step) < n_epochs:
-                data_loader = NonSeqDataLoader(
-                    data_dir=self.data_dir,
+                # data_loader = NonSeqDataLoader(
+                #     data_dir=self.data_dir,
+                #     n_folds=self.n_folds,
+                #     fold_idx=self.fold_idx
+                # )
+                data_loader = NonSeqMESADataLoader(
+                    data_path=self.data_dir,
+                    save_filepath=self.output_dir,
                     n_folds=self.n_folds,
-                    fold_idx=self.fold_idx
+                    fold_idx=self.fold_idx,
+                    use_npz=self.use_npz
                 )
-                x_train, y_train, x_valid, y_valid = data_loader.load_train_data(binary_sleep=self.binary_sleep)
+                x_train, y_train, x_valid, y_valid = data_loader.load_train_data()
+                # x_train, y_train, x_valid, y_valid = data_loader.load_train_data(binary_sleep=self.binary_sleep)
 
                 # Performance history
                 all_train_loss = np.zeros(n_epochs)

@@ -45,6 +45,7 @@ class DeepFeatureNet(object):
         n_batches = input_shape[0].value
         input_dims = input_shape[1].value
         n_in_filters = input_shape[3].value
+
         name = "l{}_conv".format(self.layer_idx)
         with tf.variable_scope(name) as scope:
             #The filter_shape = [8, 1, 1, 64]
